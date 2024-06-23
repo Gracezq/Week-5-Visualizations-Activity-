@@ -1,0 +1,67 @@
+---
+title: "Week 5 Visualizations Activity"
+author: "Grace Zeng"
+date: "6/23/2024"
+output:
+  html_document: null
+  theme: journal
+  pdf_document: default
+---
+
+### Description of the data：
+The dataset* selected for this analysis comes from the FBI and the Southern Poverty Law Center (SPLC) and the research question is: What are the trends in hate crime rates by state, and what state-level factors are associated with these variations?
+
+Data collection: The federal government does not systematically track hate crimes, as reporting to the FBI is voluntary. The Southern Poverty Law Center relies on media accounts and self-reports to evaluate the situation. Both sources provide publicly available data.
+
+*The dataset is found on [GitHub](https://github.com/fivethirtyeight/data/tree/master/hate-crimes)
+ and it is in csv. format.  More background information can be found in this [article](https://fivethirtyeight.com/features/higher-rates-of-hate-crimes-are-tied-to-income-inequality/).
+
+
+---
+
+
+```{r setup, include= FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#install.packages("tidyverse")
+
+library(tidyverse)
+```
+
+```{r GitHubdata, include= FALSE}
+#task 2: Loading the data：
+url <- "https://raw.githubusercontent.com/fivethirtyeight/data/master/hate-crimes/hate_crimes.csv"
+hate_crimes <- read_csv(url)
+glimpse(hate_crimes)
+```
+
+Histogram: 
+```{r histogram, echo = FALSE}
+ggplot(hate_crimes, aes(x=median_household_income)) + 
+  geom_histogram()
+```
+
+Bar chart: 
+
+```{r bar, echo = FALSE }
+ggplot(data = hate_crimes, aes(x = state, y = median_household_income)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(title = "Median Household Income by State",
+       x = "State",
+       y = "Median Household Income")
+
+```
+
+Correlation plot: median_household_income and avg_hatecrimes_per_100k_fbi
+```{r cor, echo = FALSE }
+ggplot(data = hate_crimes) +
+  geom_point(mapping = aes(x = median_household_income, y = avg_hatecrimes_per_100k_fbi))
+```
+
+Correlation plot: median_household_income and share_population_with_high_school_degree
+
+```{r cor2, echo = FALSE }
+ggplot(data = hate_crimes) +
+  geom_point(mapping = aes(x = median_household_income, y = share_population_with_high_school_degree))
+```
